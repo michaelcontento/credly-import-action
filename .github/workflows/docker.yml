@@ -1,0 +1,44 @@
+name: Docker
+
+on:
+  push:
+    branches: [ "v1" ]
+  pull_request:
+    branches: [ "v1" ]
+
+jobs:
+
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v3
+    
+    - name: Build the Docker image
+      run: docker build . --file Dockerfile
+      
+    - name: Login to DockerHub
+      if: ${{ github.event_name == 'push' }}
+      uses: docker/login-action@v2
+      with:
+        username: ${{ secrets.DOCKERHUB_USERNAME }}
+        password: ${{ secrets.DOCKERHUB_TOKEN }}
+
+    - name: Login to GitHub Container Registry
+      if: ${{ github.event_name == 'push' }}
+      uses: docker/login-action@v2
+      with:
+        registry: ghcr.io
+        username: ${{ github.repository_owner }}
+        password: ${{ secrets.GITHUB_TOKEN }}
+
+    - name: Build and push
+      if: ${{ github.event_name == 'push' }}
+      uses: docker/build-push-action@v3
+      with:
+        context: .
+        push: true
+        tags: |
+          michaelcontento/credly2hugo-action:${{ github.ref_name}}
+          ghcr.io/michaelcontento/credly2hugo-action:${{ github.ref_name }}

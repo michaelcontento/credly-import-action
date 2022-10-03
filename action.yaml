@@ -1,0 +1,28 @@
+name: Credly importer
+description: Fetches a single users badges from Credly
+branding:
+  icon: award
+  color: orange
+inputs:
+  username:
+    description: Username on credly
+    required: true
+    type: string
+  datafile:
+    description: Filename where to store the JSON file
+    required: false
+    type: string
+    default: CredlyBadges.json
+  imagedir:
+    description: Path where to store the badge images
+    required: false
+    type: string
+    default: CredlyBadges
+  skip_image_downloading:
+    description: Wether or not we should download the badge images at all
+    require: false
+    type: numeric
+    default: 0
+runs:
+  using: docker
+  image: Dockerfile
