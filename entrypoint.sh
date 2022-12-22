@@ -32,8 +32,8 @@ if [ "${INPUT_SKIP_IMAGE_DOWNLOADING}" == "1" ]; then
 fi
 
 for url in $(jq --raw-output '.data[] | .badge_template.image_url' "$INPUT_DATAFILE"); do
-    GUID="$(echo $url | cut -d'/' -f5)"
-    EXT="$(echo $url | rev | cut -d'.' -f1 | rev)"
+    GUID="$(echo "$url" | cut -d'/' -f5)"
+    EXT="$(echo "$url" | rev | cut -d'.' -f1 | rev)"
     FULL_LOCAL_PATH="${INPUT_IMAGEDIR}/${GUID}.${EXT}"
 
     if [ -f "$FULL_LOCAL_PATH" ]; then
