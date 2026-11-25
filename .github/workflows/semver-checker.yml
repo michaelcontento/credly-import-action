@@ -2,7 +2,6 @@ name: Check SemVer
 
 on:
   push:
-    branches: [ "main" ]
     tags:
       - '*'
   workflow_dispatch:
